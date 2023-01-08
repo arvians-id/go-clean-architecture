@@ -1,0 +1,22 @@
+version: "3"
+services:
+  db:
+    container_name: go-postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: go_clean_architecture
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    volumes:
+      - ./database/postgres/postgres-data:/var/lib/postgresql/data
+    networks:
+      - clean-architecture
+    restart: always
+
+networks:
+  clean-architecture:
+    driver: bridge
