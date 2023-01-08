@@ -18,17 +18,6 @@ func NewUserController(userService service.UserService) UserController {
 	}
 }
 
-func (controller *UserController) Route(router *gin.Engine) {
-	unauthorized := router.Group("/api")
-	{
-		unauthorized.GET("/users", controller.FindAll)
-		unauthorized.GET("/users/:id", controller.FindByID)
-		unauthorized.POST("/users", controller.Create)
-		unauthorized.PATCH("/users/:id", controller.Update)
-		unauthorized.DELETE("/users/:id", controller.Delete)
-	}
-}
-
 func (controller *UserController) FindAll(ctx *gin.Context) {
 	users, err := controller.UserService.FindAll(ctx)
 	if err != nil {
