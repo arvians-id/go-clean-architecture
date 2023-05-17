@@ -47,11 +47,11 @@ func NewPostgresSQL(configuration Config) (*sql.DB, error) {
 
 func databasePooling(configuration Config, db *sql.DB) error {
 	// Limit connection with db pooling
-	setMaxIdleConns, err := strconv.Atoi(configuration.Get("DATABASE_POOL_MIN"))
+	setMaxIdleConns, err := strconv.Atoi(configuration.Get("DATABASE_POOL_MAX_IDLE"))
 	if err != nil {
 		return err
 	}
-	setMaxOpenConns, err := strconv.Atoi(configuration.Get("DATABASE_POOL_MAX"))
+	setMaxOpenConns, err := strconv.Atoi(configuration.Get("DATABASE_POOL_MAX_OPEN"))
 	if err != nil {
 		return err
 	}
@@ -64,10 +64,10 @@ func databasePooling(configuration Config, db *sql.DB) error {
 		return err
 	}
 
-	db.SetMaxIdleConns(setMaxIdleConns)                                    // minimal connection
-	db.SetMaxOpenConns(setMaxOpenConns)                                    // maximal connection
-	db.SetConnMaxLifetime(time.Duration(setConnMaxIdleTime) * time.Second) // unused connections will be deleted
-	db.SetConnMaxIdleTime(time.Duration(setConnMaxLifetime) * time.Second) // connection that can be used
+	db.SetMaxIdleConns(setMaxIdleConns)                                    // maximal idle connection
+	db.SetMaxOpenConns(setMaxOpenConns)                                    // maximal open connection
+	db.SetConnMaxLifetime(time.Duration(setConnMaxIdleTime) * time.Minute) // unused connections will be deleted
+	db.SetConnMaxIdleTime(time.Duration(setConnMaxLifetime) * time.Minute) // connection that can be used
 
 	return nil
 }

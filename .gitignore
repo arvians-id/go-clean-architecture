@@ -1,3 +1,4 @@
 database/postgres/postgres-data
 .idea
 .vscode
+.env

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	configuration := config.New("../../.env")
+	configuration := config.New()
 	router, err := injection.InitServerAPI(configuration)
 	if err != nil {
 		log.Fatalln(err)
