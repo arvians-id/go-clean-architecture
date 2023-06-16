@@ -1,45 +1,23 @@
 package response
 
-import (
-	"github.com/gin-gonic/gin"
-	"net/http"
-)
+import "github.com/gofiber/fiber/v2"
 
 var (
-	ErrorNotFound         = "sql: no rows in result set"
-	WrongPassword         = "wrong password"
-	VerificationExpired   = "reset password verification is expired"
-	ResponseErrorNotFound = "data not found"
+	NotFound = "record not found"
 )
 
-func ReturnErrorNotFound(c *gin.Context, err error, data interface{}) {
-	c.JSON(http.StatusNotFound, WebResponse{
-		Code:   http.StatusNotFound,
-		Status: "data not found",
-		Data:   data,
+func ReturnErrorValidation(c *fiber.Ctx, code int, err []*ErrorResponse) error {
+	return c.Status(code).JSON(ErrorValidationResponse{
+		Code:   code,
+		Status: "There are errors validation",
+		Error:  err,
 	})
 }
 
-func ReturnErrorInternalServerError(c *gin.Context, err error, data interface{}) {
-	c.JSON(http.StatusInternalServerError, WebResponse{
-		Code:   http.StatusInternalServerError,
+func ReturnError(c *fiber.Ctx, code int, err error) error {
+	return c.Status(code).JSON(ApiResponse{
+		Code:   code,
 		Status: err.Error(),
-		Data:   data,
-	})
-}
-
-func ReturnErrorBadRequest(c *gin.Context, err error, data interface{}) {
-	c.JSON(http.StatusBadRequest, WebResponse{
-		Code:   http.StatusBadRequest,
-		Status: err.Error(),
-		Data:   data,
-	})
-}
-
-func ReturnErrorUnauthorized(c *gin.Context, err error, data interface{}) {
-	c.JSON(http.StatusUnauthorized, WebResponse{
-		Code:   http.StatusUnauthorized,
-		Status: err.Error(),
-		Data:   data,
+		Data:   nil,
 	})
 }

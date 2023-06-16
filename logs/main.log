@@ -1,0 +1,43 @@
+[16-Jun-2023 15:14:48] | 200 | 124.3271ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:14:52] | 500 | 105.4957ms | 127.0.0.1 | GET | /api/users/2 | record not found
+[16-Jun-2023 15:18:19] | 200 | 9.6714ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:20:04] | 200 | 10.6091ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:20:05] | 200 | 109.1879ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:20:29] | 200 | 122.8604ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:22:11] | 500 | 118.4246ms | 127.0.0.1 | GET | /api/users/2 | record not found
+[16-Jun-2023 15:27:04] | 200 | 121.8498ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:27:05] | 500 | 107.962ms | 127.0.0.1 | GET | /api/users/2 | record not found
+[16-Jun-2023 15:27:43] | 500 | 182.4109ms | 127.0.0.1 | POST | /api/users | sql: expected 6 destination arguments in Scan, not 1
+[16-Jun-2023 15:27:48] | 500 | 103.3853ms | 127.0.0.1 | PATCH | /api/users/2 | record not found
+[16-Jun-2023 15:27:50] | 500 | 108.1066ms | 127.0.0.1 | DELETE | /api/users/2 | record not found
+[16-Jun-2023 15:27:56] | 500 | 115.8063ms | 127.0.0.1 | PATCH | /api/users/2 | record not found
+[16-Jun-2023 15:28:22] | 404 | 119.2676ms | 127.0.0.1 | PATCH | /api/users/2 | record not found
+[16-Jun-2023 15:28:25] | 404 | 107.47ms | 127.0.0.1 | DELETE | /api/users/2 | record not found
+[16-Jun-2023 15:29:07] | 500 | 166.6015ms | 127.0.0.1 | POST | /api/users | ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)
+[16-Jun-2023 15:29:30] | 500 | 177.7316ms | 127.0.0.1 | POST | /api/users | sql: expected 6 destination arguments in Scan, not 1
+[16-Jun-2023 15:30:33] | 500 | 185.5608ms | 127.0.0.1 | POST | /api/users | ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)
+[16-Jun-2023 15:31:02] | 201 | 164.2746ms | 127.0.0.1 | POST | /api/users | -
+[16-Jun-2023 15:32:37] | 400 |      0s | 127.0.0.1 | POST | /api/users | Unprocessable Entity
+[16-Jun-2023 15:33:01] | 400 |      0s | 127.0.0.1 | POST | /api/users | Unprocessable Entity
+[16-Jun-2023 15:34:11] | 400 |      0s | 127.0.0.1 | POST | /api/users | Unprocessable Entity
+[16-Jun-2023 15:34:12] | 400 | 793.1µs | 127.0.0.1 | POST | /api/users | Unprocessable Entity
+[16-Jun-2023 15:34:20] | 201 | 181.2145ms | 127.0.0.1 | POST | /api/users | -
+[16-Jun-2023 15:35:19] | 400 |      0s | 127.0.0.1 | PATCH | /api/users/2 | Unprocessable Entity
+[16-Jun-2023 15:35:22] | 404 | 123.4079ms | 127.0.0.1 | PATCH | /api/users/2 | record not found
+[16-Jun-2023 15:35:27] | 200 | 162.4612ms | 127.0.0.1 | PATCH | /api/users/6 | -
+[16-Jun-2023 15:35:40] | 200 | 109.7995ms | 127.0.0.1 | PATCH | /api/users/6 | -
+[16-Jun-2023 15:35:53] | 200 | 109.1278ms | 127.0.0.1 | PATCH | /api/users/6 | -
+[16-Jun-2023 15:36:06] | 200 | 106.9041ms | 127.0.0.1 | PATCH | /api/users/6 | -
+[16-Jun-2023 15:36:22] | 200 | 124.1088ms | 127.0.0.1 | PATCH | /api/users/6 | -
+[16-Jun-2023 15:36:32] | 200 | 107.509ms | 127.0.0.1 | DELETE | /api/users/6 | -
+[16-Jun-2023 15:36:36] | 200 | 112.5343ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:36:46] | 201 | 167.6533ms | 127.0.0.1 | POST | /api/users | -
+[16-Jun-2023 15:36:49] | 404 | 113.0733ms | 127.0.0.1 | GET | /api/users/2 | record not found
+[16-Jun-2023 15:36:54] | 200 | 105.2012ms | 127.0.0.1 | GET | /api/users/7 | -
+[16-Jun-2023 15:36:58] | 200 | 108.036ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:37:01] | 200 | 116.7113ms | 127.0.0.1 | GET | /api/users/7 | -
+[16-Jun-2023 15:37:04] | 500 | 167.1737ms | 127.0.0.1 | POST | /api/users | ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)
+[16-Jun-2023 15:37:27] | 201 | 177.2568ms | 127.0.0.1 | POST | /api/users | -
+[16-Jun-2023 15:37:29] | 200 | 108.4082ms | 127.0.0.1 | GET | /api/users | -
+[16-Jun-2023 15:37:42] | 200 | 119.8053ms | 127.0.0.1 | PATCH | /api/users/7 | -
+[16-Jun-2023 15:37:47] | 200 | 113.5547ms | 127.0.0.1 | PATCH | /api/users/7 | -

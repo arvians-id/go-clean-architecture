@@ -17,11 +17,11 @@ type UserServiceContract interface {
 }
 
 type UserService struct {
-	UserRepository repository.UserRepository
+	UserRepository repository.UserRepositoryContract
 }
 
-func NewUserService(userRepository repository.UserRepository) UserService {
-	return UserService{
+func NewUserService(userRepository repository.UserRepositoryContract) UserServiceContract {
+	return &UserService{
 		UserRepository: userRepository,
 	}
 }
@@ -63,15 +63,9 @@ func (service *UserService) Update(ctx context.Context, request *request.UpdateU
 		newPassword = passwordHashed
 	}
 
-	currentTime, err := util.CurrentTime()
-	if err != nil {
-		return nil, err
-	}
-
 	checkUser.ID = request.ID
 	checkUser.Name = request.Name
 	checkUser.Password = newPassword
-	checkUser.UpdatedAt = currentTime
 
 	return service.UserRepository.Update(ctx, checkUser)
 }

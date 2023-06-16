@@ -4,111 +4,108 @@ import (
 	"github.com/arvians-id/go-clean-architecture/internal/http/presenter/request"
 	"github.com/arvians-id/go-clean-architecture/internal/http/presenter/response"
 	"github.com/arvians-id/go-clean-architecture/internal/service"
-	"github.com/gin-gonic/gin"
-	"strconv"
+	"github.com/arvians-id/go-clean-architecture/util"
+	"github.com/gofiber/fiber/v2"
 )
 
 type UserController struct {
-	UserService service.UserService
+	UserService service.UserServiceContract
 }
 
-func NewUserController(userService service.UserService) UserController {
+func NewUserController(userService service.UserServiceContract) UserController {
 	return UserController{
 		UserService: userService,
 	}
 }
 
-func (controller *UserController) FindAll(ctx *gin.Context) {
-	users, err := controller.UserService.FindAll(ctx)
+func (controller *UserController) FindAll(ctx *fiber.Ctx) error {
+	users, err := controller.UserService.FindAll(ctx.Context())
 	if err != nil {
-		response.ReturnErrorInternalServerError(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	response.ReturnSuccessOK(ctx, "OK", users)
+	return response.ReturnSuccess(ctx, fiber.StatusOK, "OK", users)
 }
 
-func (controller *UserController) FindByID(ctx *gin.Context) {
-	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+func (controller *UserController) FindByID(ctx *fiber.Ctx) error {
+	id, err := ctx.ParamsInt("id")
 	if err != nil {
-		response.ReturnErrorBadRequest(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	user, err := controller.UserService.FindByID(ctx, id)
+	user, err := controller.UserService.FindByID(ctx.Context(), int64(id))
 	if err != nil {
-		if err.Error() == response.ErrorNotFound {
-			response.ReturnErrorNotFound(ctx, err, nil)
-			return
+		if err.Error() == response.NotFound {
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
 		}
-		response.ReturnErrorInternalServerError(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	response.ReturnSuccessOK(ctx, "OK", user)
+	return response.ReturnSuccess(ctx, fiber.StatusOK, "OK", user)
 }
 
-func (controller *UserController) Create(ctx *gin.Context) {
+func (controller *UserController) Create(ctx *fiber.Ctx) error {
 	var userRequest request.CreateUserRequest
-	err := ctx.ShouldBindJSON(&userRequest)
+	err := ctx.BodyParser(&userRequest)
 	if err != nil {
-		response.ReturnErrorBadRequest(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	user, err := controller.UserService.Create(ctx, &userRequest)
-	if err != nil {
-		response.ReturnErrorInternalServerError(ctx, err, nil)
-		return
+	errValidation := util.ValidateStruct(userRequest)
+	if errValidation != nil {
+		return response.ReturnErrorValidation(ctx, fiber.StatusBadRequest, errValidation)
 	}
 
-	response.ReturnSuccessOK(ctx, "OK", user)
+	user, err := controller.UserService.Create(ctx.Context(), &userRequest)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return response.ReturnSuccess(ctx, fiber.StatusCreated, "created", user)
 }
 
-func (controller *UserController) Update(ctx *gin.Context) {
+func (controller *UserController) Update(ctx *fiber.Ctx) error {
 	var userRequest request.UpdateUserRequest
-	err := ctx.ShouldBindJSON(&userRequest)
+	err := ctx.BodyParser(&userRequest)
 	if err != nil {
-		response.ReturnErrorBadRequest(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
-	if err != nil {
-		response.ReturnErrorBadRequest(ctx, err, nil)
-		return
+	errValidation := util.ValidateStruct(userRequest)
+	if errValidation != nil {
+		return response.ReturnErrorValidation(ctx, fiber.StatusBadRequest, errValidation)
 	}
 
-	userRequest.ID = id
-	user, err := controller.UserService.Update(ctx, &userRequest)
+	id, err := ctx.ParamsInt("id")
 	if err != nil {
-		if err.Error() == response.ErrorNotFound {
-			response.ReturnErrorNotFound(ctx, err, nil)
-			return
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	userRequest.ID = int64(id)
+	user, err := controller.UserService.Update(ctx.Context(), &userRequest)
+	if err != nil {
+		if err.Error() == response.NotFound {
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
 		}
-		response.ReturnErrorInternalServerError(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	response.ReturnSuccessOK(ctx, "OK", user)
+	return response.ReturnSuccess(ctx, fiber.StatusOK, "updated", user)
 }
 
-func (controller *UserController) Delete(ctx *gin.Context) {
-	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+func (controller *UserController) Delete(ctx *fiber.Ctx) error {
+	id, err := ctx.ParamsInt("id")
 	if err != nil {
-		response.ReturnErrorBadRequest(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	err = controller.UserService.Delete(ctx, id)
+	err = controller.UserService.Delete(ctx.Context(), int64(id))
 	if err != nil {
-		if err.Error() == response.ErrorNotFound {
-			response.ReturnErrorNotFound(ctx, err, nil)
-			return
+		if err.Error() == response.NotFound {
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
 		}
-		response.ReturnErrorInternalServerError(ctx, err, nil)
-		return
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	response.ReturnSuccessOK(ctx, "OK", nil)
+	return response.ReturnSuccess(ctx, fiber.StatusOK, "deleted", nil)
 }
